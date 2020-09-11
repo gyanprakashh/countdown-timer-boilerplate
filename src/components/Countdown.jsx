@@ -3,14 +3,22 @@ import Clock from './Clock';
 import CountdownForm from './CountdownForm';
 
 class Countdown extends React.Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             count:0
+        }
+    }
+    
   
 
     render() {
 
         return (
             <div>
-                <Clock timeInSeconds={count}/>
-                <CountdownForm onSetCountdownTime={}/>
+                <Clock timeInSeconds={this.count}/>
+                <CountdownForm onSetCountdownTime={val=>this.setState({count:val})}/>
             </div>
         );
     }

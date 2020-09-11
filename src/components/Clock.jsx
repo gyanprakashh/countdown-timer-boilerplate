@@ -1,6 +1,15 @@
 import React from 'react';
 
 class Clock extends React.Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            displayTime: "",
+			timeInSec: 0,
+        }
+    }
+    
     formatTime(timeInSeconds) {
         var seconds = timeInSeconds % 60;
         var minutes = Math.floor(timeInSeconds / 60);
@@ -15,6 +24,23 @@ class Clock extends React.Component {
 
         return minutes + ':' + seconds;
     }
+    startTimer = () => {
+		const { timeInSeconds } = this.props;
+		this.clock = setInterval(() => {
+			this.setState({
+				timeInSec: this.state.timeInSec - 1,
+				displayTime: this.formatTime(this.state.timeInSec - 1),
+			});
+		}, 1000);
+
+		setTimeout(() => {
+			clearInterval(this.clock);
+		}, (timeInSeconds + 1) * 1000);
+	};
+    componentDidMount(){
+        this.setState({ timeInSec: this.props.timeInSeconds + 1 });
+		if (this.props.timeInSeconds > 0) this.startTimer();
+    }
 
     render() {
         var {timeInSeconds} = this.props;
@@ -22,7 +48,7 @@ class Clock extends React.Component {
         return (
             <div className="clock">
                 <span className="clock-text">
-                  
+                {this.timeInSec !== 0 && this.displayTime}
                 </span>
             </div>
         );
